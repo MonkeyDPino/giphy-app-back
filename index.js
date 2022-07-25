@@ -11,6 +11,9 @@ app.use(express.json())
 app.use(cors())
 app.use("/api/auth",authRoute)
 app.use("/api/user",userRoute)
+app.get("/",(req, res) =>{
+    res.status(200).send("Back for giphy pino app")
+})
 
 
 app.listen({port: process.env.PORT || 5000},async()=>{
