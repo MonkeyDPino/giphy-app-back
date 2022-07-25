@@ -21,7 +21,7 @@ router.post("/register", async function (req, response) {
   }
   const { password, ...others } = user;
 
-  const newUser= new User({
+  const newUser = new User({
     ...others,
     password: Cryptojs.AES.encrypt(
       user.password,
@@ -36,31 +36,31 @@ router.post("/register", async function (req, response) {
         error: error,
       });
     }
-    return response.send(result);
+    return response.status(201).send(result);
   });
 });
 
 router.post("/login", async (req, response) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if(!user) {
+    if (!user) {
       return response.status(404).send({
         ok: false,
         error: "user not found",
       });
-    }    
+    }
 
     const Pass = Cryptojs.AES.decrypt(
       user.password,
       process.env.PASS_SEC
     ).toString(Cryptojs.enc.Utf8);
 
-    if(Pass !== req.body.password.toString()){
+    if (Pass !== req.body.password.toString()) {
       return response.status(401).send({
         ok: false,
         error: "bad credentials",
       });
-    }      
+    }
 
     const accessToken = jwt.sign(
       {

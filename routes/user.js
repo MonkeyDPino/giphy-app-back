@@ -61,4 +61,16 @@ router.delete("/fav", verifyToken, async function (req, res) {
   }
 });
 
+router.get("/fav", verifyToken, async function (req, res) {
+  try {
+    const user = await User.findById(req.user.id);
+    return res.status(200).send(user.favs);
+  } catch (e) {
+    return res.status(500).send({
+      ok: false,
+      error: e,
+    });
+  }
+});
+
 module.exports = router;
